@@ -1,0 +1,65 @@
+//------------------------------------------------
+//--- 010 Editor v15.0.1 Binary Template
+//
+//      File: EVHLTemplate.bt
+//   Authors: XenonValstrax
+//   Version: 1.0
+//   Purpose: Parsing MHWorld EVHL files
+//  Category: 
+// File Mask: *.evhl
+//  ID Bytes: 
+//   History: Dec 18, 2024
+//------------------------------------------------
+
+struct AXIS
+    {
+        float floatX <bgcolor=cDkRed>;
+        float floatY <bgcolor=cDkGreen>;
+        float floatZ <bgcolor=cDkBlue>;
+    }; 
+
+struct HEADER 
+{
+    struct INFO
+    {
+        uint IceborneMark;
+        char type[4]  <name="File Type">;
+        uint version  <name="EVHL Version">;
+    } 
+    Info <comment="Do NOT modify", bgcolor=cDkAqua>;
+    AXIS HeadScale;
+    AXIS UnknownFloatSet;
+    struct TOGGLES
+    {
+        byte UnknownBool[56];
+        byte toggleHair;
+        byte UnkBool;
+    } Toggles <comment="Not sure. 1 | 0 = Enable | Disable", bgcolor=0x8a5143>;
+    uint numRecords <name="Amount of Records", comment="Change this if a record block was added / deleted, then refresh the template.", bgcolor=cGreen>;
+};
+
+struct RECORD
+{
+    byte  beginMark[4]  <bgcolor=cRed, comment="Do NOT modify">;
+    byte  unknownByte01 <comment="Maybe bone ID?", bgcolor=cAqua>;
+    float unknownFloatSet[187];
+};
+
+struct BODY
+{
+    local uint _ <hidden=true>;
+    // Read all record blocks by the amount.
+    for (_=0; _<file.header.numRecords; _++)
+    {
+        RECORD record <name="EVHL Record (WIP)", bgcolor=cDkPurple>;
+    };
+};
+
+struct FILE 
+{
+    HEADER header <name="EVHL Header">;
+    BODY   body   <name="EVHL Body", comment="Can be null">;
+    short  end    <name="EVHL End", comment="Usually 0, but 1 for some Odogaron armors. Might cause render issues.">;
+};
+
+FILE file <name="EVHL File">;
