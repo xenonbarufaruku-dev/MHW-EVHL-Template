@@ -5,18 +5,18 @@
 //   Authors: XenonValstrax
 //   Version: 1.0
 //   Purpose: Parsing MHWorld EVHL files
-//  Category: 
+//  Category: MT Framework
 // File Mask: *.evhl
 //  ID Bytes: 
-//   History: Dec 18, 2024
+//   History: Dec 18, 2024 (UTC)
 //------------------------------------------------
 
 struct AXIS
-    {
-        float floatX <bgcolor=cDkRed>;
-        float floatY <bgcolor=cDkGreen>;
-        float floatZ <bgcolor=cDkBlue>;
-    }; 
+{
+    float floatX; //<bgcolor=cDkRed>;
+    float floatY; //<bgcolor=cDkGreen>;
+    float floatZ; //<bgcolor=cDkBlue>;
+};
 
 struct HEADER 
 {
@@ -34,15 +34,16 @@ struct HEADER
         byte UnknownBool[56];
         byte toggleHair;
         byte UnkBool;
-    } Toggles <comment="Not sure. 1 | 0 = Enable | Disable", bgcolor=0x8a5143>;
-    uint numRecords <name="Amount of Records", comment="Change this if a record block was added / deleted, then refresh the template.", bgcolor=cGreen>;
+    } Toggles <comment="Not sure. 1 | 0 = Enable | Disable">;
+    uint numRecords <name="Amount of Recorded Hairs", comment="Change this if a record block was added / deleted, then refresh the template.", bgcolor=cGreen>;
 };
 
 struct RECORD
 {
     byte  beginMark[4]  <bgcolor=cRed, comment="Do NOT modify">;
-    byte  unknownByte01 <comment="Maybe bone ID?", bgcolor=cAqua>;
-    float unknownFloatSet[187];
+    byte  unknownByte01 <comment="Seems like hair ID. (check nativePC\\pl\\hair\\ for the ID)", bgcolor=cAqua>;
+    int   toggleDisplay <comment="Not sure. 1 | 0 = Enable | Disable", bgcolor=0x00AAFF>;
+    AXIS unknownAxis[62];
 };
 
 struct BODY
@@ -51,13 +52,13 @@ struct BODY
     // Read all record blocks by the amount.
     for (_=0; _<file.header.numRecords; _++)
     {
-        RECORD record <name="EVHL Record (WIP)", bgcolor=cDkPurple>;
+        RECORD record <name="EVHL Hair Modifier", comment="(WIP, Not sure)", bgcolor=cDkPurple>;
     };
 };
 
 struct FILE 
 {
-    HEADER header <name="EVHL Header">;
+    HEADER header <name="EVHL Header", bgcolor=0x8A5143>;
     BODY   body   <name="EVHL Body", comment="Can be null">;
     short  end    <name="EVHL End", comment="Usually 0, but 1 for some Odogaron armors. Might cause render issues.">;
 };
