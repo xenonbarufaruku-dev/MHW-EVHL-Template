@@ -8,7 +8,7 @@
 //  Category: MT Framework
 // File Mask: *.evhl
 //  ID Bytes: 
-//   History: Dec 18, 2024 (UTC)
+//   History: Dec 30, 2024 (UTC)
 //------------------------------------------------
 
 struct AXIS
@@ -41,8 +41,8 @@ struct HEADER
 struct RECORD
 {
     byte  beginMark[4]  <bgcolor=cRed, comment="Do NOT modify">;
-    byte  unknownByte01 <comment="Seems like hair ID. (check nativePC\\pl\\hair\\ for the ID)", bgcolor=cAqua>;
-    int   toggleDisplay <comment="Not sure. 1 | 0 = Enable | Disable", bgcolor=0x00AAFF>;
+    int   hairID <comment="Check nativePC\\pl\\hair\\ for the ID.", bgcolor=cAqua>;
+    byte  toggleDisplay <comment="Not sure. 1 | 0 = Enable | Disable", bgcolor=0x00AAFF>;
     AXIS unknownAxis[62];
 };
 
@@ -60,7 +60,7 @@ struct FILE
 {
     HEADER header <name="EVHL Header", bgcolor=0x8A5143>;
     BODY   body   <name="EVHL Body", comment="Can be null">;
-    short  end    <name="EVHL End", comment="Usually 0, but 1 for some Odogaron armors. Might cause render issues.">;
+    short  end    <name="EVHL End", comment="Usually 0, but 1 for some Odogaron armors. Might cause render issues.", bgcolor=cLtBlue>;
 };
 
 FILE file <name="EVHL File">;
